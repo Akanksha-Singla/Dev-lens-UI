@@ -1,35 +1,31 @@
-import { Bell } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { Code2, Menu, Moon, Sun } from "lucide-react";
 
-function Navbar() {
+interface Props {
+  theme: "light" | "dark";
+  onToggleTheme: () => void;
+  onMenu: () => void;
+}
+
+function Navbar({ theme, onToggleTheme, onMenu }: Props) {
   return (
-    <nav className="h-16 border-b bg-white px-6 flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
-          D
-        </div>
-
-        <span className="text-lg font-bold tracking-tight">
-          DevLens
-        </span>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100">
-          <Bell size={19} />
+    <header className="topbar">
+      <div className="brand-lockup">
+        <button className="icon-button mobile-menu" aria-label="Open navigation" onClick={onMenu}>
+          <Menu size={19} />
         </button>
-
-        <div className="flex items-center gap-2 border-l pl-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200">
-            <FaGithub size={17} />
-          </div>
-
-          <span className="text-sm font-medium">
-            GitHub User
-          </span>
-        </div>
+        <span className="brand-mark"><Code2 size={19} strokeWidth={2.4} /></span>
+        <span className="brand-name">devlens<span className="brand-period">.</span></span>
+        <span className="brand-divider" />
+        <span className="brand-caption">CODE INTELLIGENCE</span>
       </div>
-    </nav>
+      <div className="topbar-actions">
+        <span className="workspace-label"><span className="live-dot" /> Workspace</span>
+        <button className="icon-button" aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} title={`Switch to ${theme === "light" ? "dark" : "light"} mode`} onClick={onToggleTheme}>
+          {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+        </button>
+        <span className="avatar" aria-label="Demo workspace user">N</span>
+      </div>
+    </header>
   );
 }
 
