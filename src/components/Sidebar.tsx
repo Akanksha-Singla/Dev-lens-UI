@@ -1,11 +1,17 @@
 import { NavLink } from "react-router-dom";
 import {
+  MessageSquareText,
   LayoutDashboard,
   FolderGit2,
-  Settings,
+  CircleHelp,
 } from "lucide-react";
 
-function Sidebar() {
+interface Props {
+  open: boolean;
+  onNavigate: () => void;
+}
+
+function Sidebar({ open, onNavigate }: Props) {
   const links = [
     {
       name: "Dashboard",
@@ -17,11 +23,17 @@ function Sidebar() {
       path: "/repositories",
       icon: FolderGit2,
     },
+    {
+      name: "Codebase Q&A",
+      path: "/ask",
+      icon: MessageSquareText,
+    },
   ];
 
   return (
-    <aside className="w-64 min-h-[calc(100vh-64px)] border-r bg-white p-4">
-      <nav className="space-y-2">
+    <aside className={`sidebar${open ? " sidebar-open" : ""}`}>
+      <div className="sidebar-section-label">WORKSPACE</div>
+      <nav className="sidebar-nav" aria-label="Main navigation">
         {links.map((link) => {
           const Icon = link.icon;
 
@@ -29,26 +41,26 @@ function Sidebar() {
             <NavLink
               key={link.path}
               to={link.path}
+              onClick={onNavigate}
+              end={link.path === "/dashboard"}
               className={({ isActive }) =>
-                `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
-                  isActive
-                    ? "bg-indigo-50 text-indigo-600"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`
+                `nav-link${isActive ? " nav-link-active" : ""}`
               }
             >
               <Icon size={18} />
               {link.name}
+              {link.name === "Codebase Q&A" && <span className="nav-new-dot" />}
             </NavLink>
           );
         })}
       </nav>
 
-      <div className="mt-8 border-t pt-4">
-        <div className="flex items-center gap-3 px-3 py-2 text-sm text-gray-500">
-          <Settings size={18} />
-          Settings
+      <div className="sidebar-bottom">
+        <div className="sidebar-tip">
+          <CircleHelp size={17} />
+          <span><strong>Need a starting point?</strong><br />Ask DevLens about any indexed repo.</span>
         </div>
+        <div className="sidebar-version">DEVLENS <span>DEMO BUILD</span></div>
       </div>
     </aside>
   );
